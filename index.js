@@ -16,7 +16,7 @@ var app = express()
 app.use(cors())
 
 app.get('/', (req, res) => {
-  res.send('Hello World! 1');
+  res.send('Hello World! v 1.0.1');
 });
 
 app.get('/attractions', function(req, res, next) {
@@ -26,5 +26,5 @@ app.get('/attractions', function(req, res, next) {
 });
 
 app.listen(port, () => {
-  console.log(`app listening at ${port}`);
+  console.log(`app listening at new ${port}`);
 });
