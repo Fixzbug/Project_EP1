@@ -20,3 +20,6 @@ INSERT INTO `attractions` (`id`, `name`, `detail`, `coverimage`, `latitude`, `lo
 (10, 'Great Pyramid of Giza', 'The Great Pyramid of Giza is the oldest and largest of the pyramids in the Giza pyramid complex bordering present-day Giza in Greater Cairo, Egypt. It is the oldest of the Seven Wonders of the Ancient World, and the only one to remain largely intact.', 'https://www.melivecode.com/attractions/10.jpg', '29.9791670', '31.1341670'),
 (11, 'Hollywood Sign', 'The Hollywood Sign is an American landmark and cultural icon overlooking Hollywood, Los Angeles, California. It is situated on Mount Lee, in the Beachwood Canyon area of the Santa Monica Mountains. Spelling out the word Hollywood in 45 ft (13.7 m)-tall white capital letters and 350 feet (106.7 m) long.', 'https://www.melivecode.com/attractions/11.jpg', '34.1340610', '-118.3215920'),
 (12, 'Wat Phra Kaew', 'Wat Phra Kaew, commonly known in English as the Temple of the Emerald Buddha and officially as Wat Phra Si Rattana Satsadaram, is regarded as the most sacred Buddhist temple in Thailand. The complex consists of a number of buildings within the precincts of the Grand Palace in the historical centre of Bangkok.', 'https://www.melivecode.com/attractions/12.jpg', '13.7513890', '100.4925000');
+
+ALTER USER 'makerz'@'%' IDENTIFIED WITH mysql_native_password BY 'P@ssword1234';
+FLUSH PRIVILEGES;
