@@ -16,15 +16,22 @@ var app = express()
 app.use(cors())
 
 app.get('/', (req, res) => {
-  res.send('Hello World! v 1.0.1');
+  res.send('Hello World! v 1.0.2');
 });
 
 app.get('/attractions', function(req, res, next) {
+  
   pool.query("SELECT * FROM attractions", function(err, rows, fields) {
+    if (err) {
+      console.error("Database error: ", err);
+      return res.status(500).json({ error: "Database query failed" });
+    }
+    // console.log(rows);
     res.json(rows);
   });
+  
 });
 
 app.listen(port, () => {
-  console.log(`app listening at new ${port}`);
+  console.log(`app listening at ${port}`);
 });
