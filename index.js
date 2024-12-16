@@ -21,6 +21,10 @@ app.get('/', (req, res) => {
 
 app.get('/attractions', function(req, res, next) {
   pool.query("SELECT * FROM attractions", function(err, rows, fields) {
+    if (err) {
+      console.error("Error fetching data:", err);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
     res.json(rows);
   });
 });
