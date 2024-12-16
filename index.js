@@ -1,37 +1,56 @@
-var express = require('express');
-var cors = require('cors');
-const mysql = require('mysql2');
-const port = 5000;
+const express = require('express');
+const cors = require('cors');
+const mysql = require('mysql2/promise'); // Use promise-based MySQL
 require('dotenv').config();
 
+const app = express();
+const port = process.env.PORT || 5000; // Fallback to 5000 if PORT is not defined
+
+// Ensure required environment variables are set
+// if (!process.env.DB_HOST || !process.env.DB_USER || !process.env.DB_PASSWORD || !process.env.DB_DATABASE) {
+//   console.error("Missing required environment variables! Please check your .env file.");
+//   process.exit(1);
+// }
+
+// MySQL Connection Pool
 const pool = mysql.createPool({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
-  database: process.env.DB_DATABASE
+  database: process.env.DB_DATABASE,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
 });
 
-var app = express()
+app.use(cors()); // Enable CORS
+app.use(express.json()); // Support for JSON payloads
 
-app.use(cors())
-
+// Root Route
 app.get('/', (req, res) => {
-  res.send('Hello World! v 1.0.2');
+  res.send(`Hello World! v ${process.env.APP_VERSION || '1.0.0'}`);
 });
 
-app.get('/attractions', function(req, res, next) {
-  
-  pool.query("SELECT * FROM attractions", function(err, rows, fields) {
-    if (err) {
-      console.error("Database error: ", err);
-      return res.status(500).json({ error: "Database query failed" });
-    }
-    // console.log(rows);
+// Get Attractions Route
+app.get('/attractions', async (req, res) => {
+  try {
+    const [rows] = await pool.query("SELECT * FROM attractions");
     res.json(rows);
-  });
-  
+  } catch (err) {
+    console.error("Database error: ", err.message);
+    res.status(500).json({ error: "Database query failed" });
+  }
 });
 
+// Graceful Shutdown
+process.on('SIGINT', () => {
+  pool.end(() => {
+    console.log("Database connection pool closed.");
+    process.exit(0);
+  });
+});
+
+// Start the Server
 app.listen(port, () => {
-  console.log(`app listening at ${port}`);
+  console.log(`App listening at http://localhost:${port}`);
 });
