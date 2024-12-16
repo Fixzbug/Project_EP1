@@ -9,6 +9,9 @@ services:
       MYSQL_DATABASE: test
       MYSQL_USER: makerz
       MYSQL_PASSWORD: P@ssword1234
+      # กำหนดค่า default-authentication-plugin
+      MYSQLD_OPTS: "--default-authentication-plugin=mysql_native_password"
+    command: --default-authentication-plugin=mysql_native_password
     volumes:
       - ./init-db:/docker-entrypoint-initdb.d
       - ./db-data:/var/lib/mysql
