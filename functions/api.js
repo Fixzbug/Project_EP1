@@ -5,7 +5,7 @@ const app = express();
 
 app.get('/.netlify/functions/api', (req, res) => {
     return res.json({
-        messages: "hello world!"
+        messages: "hello world! 466565656"
     });
 });
 
