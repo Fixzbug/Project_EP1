@@ -104,7 +104,7 @@ sudo docker compose up --build
 
 ## URL TEST
 
-- http://13.113.165.22:5000/attractions
+- http://13.113.165.22:5000/api
 
 public ip and port and router/ api
 

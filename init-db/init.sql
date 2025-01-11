@@ -1,4 +1,4 @@
-CREATE TABLE `attractions` (
+CREATE TABLE `data` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
   `detail` varchar(500) NOT NULL,
@@ -7,7 +7,7 @@ CREATE TABLE `attractions` (
   `longitude` decimal(11,7) NOT NULL
 );
 
-INSERT INTO `attractions` (`id`, `name`, `detail`, `coverimage`, `latitude`, `longitude`) VALUES
+INSERT INTO `data` (`id`, `name`, `detail`, `coverimage`, `latitude`, `longitude`) VALUES
 (1, 'Phi Phi Islands', 'Phi Phi Islands are a group of islands in Thailand between the large island of Phuket and the Malacca Coastal Strait of Thailand.', 'https://www.melivecode.com/attractions/1.jpg', '7.7376190', '98.7068755'),
 (2, 'Eiffel Tower', 'Eiffel Tower is one of the most famous structures in the world. Eiffel Tower is named after a leading French architect and engineer. It was built as a symbol of the World Fair in 1889.', 'https://www.melivecode.com/attractions/2.jpg', '48.8583736', '2.2922926'),
 (3, 'Times Square', 'Times Square has become a global landmark and has become a symbol of New York City. This is a result of Times Square being a modern, futuristic venue, with huge advertising screens dotting its surroundings.', 'https://www.melivecode.com/attractions/3.jpg', '40.7589652', '-73.9893574'),
