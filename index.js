@@ -32,7 +32,7 @@ app.get('/', (req, res) => {
 });
 
 // Get Attractions Route
-app.get('/attractions', async (req, res) => {
+app.get('/api', async (req, res) => {
   try {
     const [rows] = await pool.query("SELECT * FROM attractions");
     res.json(rows);

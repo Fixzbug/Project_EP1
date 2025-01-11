@@ -73,6 +73,12 @@ To clear all unused Docker data, including images, containers, volumes, and netw
 sudo docker system prune -a --volumes
 ```
 
+## URL TEST
+
+- http://13.113.165.22:5000/attractions
+
+public ip and port and router/ api
+
 ---
 
 ## **Steps to Reset and Deploy the Project**
