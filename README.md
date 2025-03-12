@@ -73,6 +73,8 @@ To clear all unused Docker data, including images, containers, volumes, and netw
 sudo docker system prune -a --volumes
 ```
 ---
+--------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------
 
 ## **Steps to Reset and Deploy the Project**
 
@@ -192,7 +194,7 @@ app.get('/', (req, res) => {
   res.send(`Hello World! Secure version ${process.env.APP_VERSION || '1.0.0'}`);
 });
 
-app.get('/attractions', async (req, res) => {
+app.get('/api', async (req, res) => {
   try {
     const [rows] = await pool.query("SELECT * FROM attractions");
     res.json(rows);

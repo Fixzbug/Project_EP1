@@ -34,7 +34,7 @@ app.get('/', (req, res) => {
 // Get Attractions Route
 app.get('/api', async (req, res) => {
   try {
-    const [rows] = await pool.query("SELECT * FROM attractions");
+    const [rows] = await pool.query("SELECT * FROM data");
     res.json(rows);
   } catch (err) {
     console.error("Database error: ", err.message);
