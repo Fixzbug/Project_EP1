@@ -1,35 +1,124 @@
-version: "3.8"
+# version: "3.8"
+
+# services:
+#   db:
+#     image: mysql:8.0.33  # Use a specific version that supports mysql_native_password
+#     environment:
+#       MYSQL_ROOT_PASSWORD: P@ssword1234
+#       MYSQL_DATABASE: test
+#       MYSQL_USER: makerz
+#       MYSQL_PASSWORD: P@ssword1234
+#     volumes:
+#       - ./init-db:/docker-entrypoint-initdb.d
+#       - ./db-data:/var/lib/mysql
+#     ports:
+#       - '3306:3306'
+#     networks:
+#       - mynetwork
+
+#   api:
+#     build: .
+#     environment:
+#       DB_HOST: db
+#       DB_USER: makerz
+#       DB_PASSWORD: P@ssword1234
+#       DB_DATABASE: test
+#     ports:
+#       - '5000:5000'
+#     depends_on:
+#       - db
+#     networks:
+#       - mynetwork
+
+# networks:
+#   mynetwork:
+#     driver: bridge
+
+version: '3.8'
 
 services:
-  db:
-    image: mysql:8.0.33  # Use a specific version that supports mysql_native_password
+  ### DATABASE - MySQL ###
+  mysql:
+    image: mysql:8
+    container_name: mysql
+    restart: always
     environment:
       MYSQL_ROOT_PASSWORD: P@ssword1234
       MYSQL_DATABASE: test
       MYSQL_USER: makerz
       MYSQL_PASSWORD: P@ssword1234
+    ports:
+      - "3306:3306"
     volumes:
       - ./init-db:/docker-entrypoint-initdb.d
       - ./db-data:/var/lib/mysql
-    ports:
-      - '3306:3306'
-    networks:
-      - mynetwork
 
-  api:
-    build: .
+  ### DATABASE - MongoDB ###
+  mongo:
+    image: mongo
+    container_name: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    command: mongod --wiredTigerCacheSizeGB 2
     environment:
-      DB_HOST: db
-      DB_USER: makerz
-      DB_PASSWORD: P@ssword1234
-      DB_DATABASE: test
-    ports:
-      - '5000:5000'
-    depends_on:
-      - db
-    networks:
-      - mynetwork
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: P@ssword1234
 
-networks:
-  mynetwork:
-    driver: bridge
+  ### MQTT Broker - EMQX ###
+  emqx:
+    image: emqx/emqx:latest
+    container_name: emqx
+    restart: always
+    ports:
+      - "1883:1883"   # MQTT
+      - "8083:8083"   # MQTT over WebSocket
+      - "8081:8081"   # EMQX Dashboard
+    environment:
+      EMQX_ALLOW_ANONYMOUS: "true"
+
+  ### Node-RED ###
+  node-red:
+    image: nodered/node-red
+    container_name: node-red
+    restart: always
+    ports:
+      - "1880:1880"
+    volumes:
+      - node_red_data:/data
+
+  ### Backend - Node.js API ###
+  backend:
+    build: ./backend
+    container_name: backend
+    restart: always
+    depends_on:
+      - mysql
+      - mongo
+      - emqx
+    ports:
+      - "3000:3000"
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_USER: user
+      MYSQL_PASSWORD: userpassword
+      MYSQL_DATABASE: device_db
+      MONGO_URI: mongodb://root:P@ssword1234@mongo:27017/device_logs?authSource=admin
+      MQTT_BROKER: mqtt://emqx
+
+  ### Frontend - Ionic ###
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "8100:8100"
+
+volumes:
+  mysql_data:
+  mongo_data:
+  node_red_data:
