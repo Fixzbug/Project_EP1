@@ -47,7 +47,6 @@ services:
       MYSQL_DATABASE: test
       MYSQL_USER: makerz
       MYSQL_PASSWORD: P@ssword1234
-      APP_VERSION: 2.0.0
     ports:
       - "3306:3306"
     volumes:
@@ -119,7 +118,25 @@ services:
   #   ports:
   #     - "8100:8100"
 
+  api:
+    build: .
+    environment:
+      DB_HOST: db
+      DB_USER: makerz
+      DB_PASSWORD: P@ssword1234
+      DB_DATABASE: test
+    ports:
+      - '3000:3000'
+    depends_on:
+      - db
+    networks:
+      - mynetwork
+
 volumes:
   mysql_data:
   mongo_data:
   node_red_data:
+
+networks:
+  mynetwork:
+    driver: bridge
