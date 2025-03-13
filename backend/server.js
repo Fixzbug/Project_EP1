@@ -1,7 +1,3 @@
-// const express = require('express');
-// const cors = require('cors');
-// const mysql = require('mysql2/promise'); // Use promise-based MySQL
-// require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const mysql = require('mysql2/promise');
@@ -37,6 +33,7 @@ mqttClient.on("connect", () => console.log("Connected to MQTT Broker"));
 // Root Route
 app.get('/', (req, res) => {
   res.send(`Hello World! v ${process.env.APP_VERSION || '1.0.0'}`);
+  mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 });
 
 // Get Attractions Route
