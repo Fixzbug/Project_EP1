@@ -36,17 +36,17 @@ mqttClient.on("error", (err) => {
 });
 
 // เชื่อมต่อ MongoDB
-mongoose.connect(process.env.MONGO_URI, {
-  // useNewUrlParser: true, useUnifiedTopology: true
-})
-  .then(() => {
-    isMongoConnected = true;
-    console.log("Connected to MongoDB");
-  })
-  .catch(err => {
-    isMongoConnected = false;
-    console.error("MongoDB Connection Error:", err);
-  });
+// mongoose.connect(process.env.MONGO_URI, {
+//   // useNewUrlParser: true, useUnifiedTopology: true
+// })
+//   .then(() => {
+//     isMongoConnected = true;
+//     console.log("Connected to MongoDB");
+//   })
+//   .catch(err => {
+//     isMongoConnected = false;
+//     console.error("MongoDB Connection Error:", err);
+//   });
 
 // Root Route
 app.get('/', (req, res) => {

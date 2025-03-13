@@ -16,6 +16,8 @@ services:
     volumes:
       - ./init-db:/docker-entrypoint-initdb.d
       - ./db-data:/var/lib/mysql
+    networks:
+      - mynetwork
 
   ### DATABASE - MongoDB ###
   mongo:
