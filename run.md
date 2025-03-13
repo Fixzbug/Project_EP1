@@ -37,19 +37,18 @@ sudo rm -rf ./db-data
    Use the following command to build and start the containers:
 ```bash
 
-sudo docker compose up --build # build before run
-sudo docker-compose up -d --build #run background
+docker-compose down -v  # Remove all containers & volumes
+docker-compose up --build -d  # Rebuild everything
 ```
 
 ---
 
 ## URL TEST
 
-- http://13.113.165.22:5000/api
+- http://http://151.106.113.75:3000/api
 
 public ip and port and router/ api
 
-
-### **Final Notes**
-- These steps ensure a clean environment for your **Node.js** and **MySQL** Docker application.
-- If you are resetting the database, **back up critical data** before deleting `./db-data`.
+### Check if MySQL ran init.sql
+affter build docker 
+docker exec -it mysql mysql -u makerz -pP@ssword1234 -D test -e "SHOW TABLES;"
