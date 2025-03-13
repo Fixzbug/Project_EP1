@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   ### DATABASE - MySQL ###
@@ -31,11 +31,11 @@ services:
     container_name: emqx
     restart: always
     ports:
-      - "1883:1883"   # MQTT
-      - "8083:8083"   # MQTT over WebSocket
-      - "8081:8081"   # EMQX Dashboard
+      - "1883:1883" # MQTT
+      - "8083:8083" # MQTT over WebSocket
+      - "8081:8081" # EMQX Dashboard
       - "18083:18083" # External Dashboard Access
-      - "8883:8883"   # Secure MQTT (Optional)
+      - "8883:8883" # Secure MQTT (Optional)
     environment:
       EMQX_ALLOW_ANONYMOUS: "true"
     networks:
@@ -73,6 +73,12 @@ services:
       MQTT_BROKER: mqtt://emqx
     networks:
       - mynetwork
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 10s
+      retries: 3
+      start_period: 20s
+      timeout: 5s
 
   ## Frontend - Ionic ###
   frontend:
