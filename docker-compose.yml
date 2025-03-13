@@ -19,22 +19,6 @@ services:
     networks:
       - mynetwork
 
-  ### DATABASE - MongoDB ###
-  mongo:
-    image: mongo
-    container_name: mongo
-    restart: always
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongo_data:/data/db
-    command: mongod --wiredTigerCacheSizeGB 2
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: P@ssword1234
-    networks:
-      - mynetwork
-
   ### MQTT Broker - EMQX ###
   emqx:
     image: emqx/emqx:latest
@@ -57,7 +41,7 @@ services:
     container_name: node-red
     restart: always
     ports:
-      - "1880:1880"
+      - "1880:1880" # External Dashboard Access
     volumes:
       - node_red_data:/data
     networks:
@@ -79,7 +63,6 @@ services:
       MYSQL_USER: makerz
       MYSQL_PASSWORD: P@ssword1234
       MYSQL_DATABASE: test
-      MONGO_URI: mongodb://root:P@ssword1234@mongo:27017/device_logs?authSource=admin
       MQTT_BROKER: mqtt://emqx
     networks:
       - mynetwork

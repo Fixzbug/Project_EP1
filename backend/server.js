@@ -11,10 +11,10 @@ app.use(express.json()); // Support for JSON payloads
 
 // MySQL Connection Pool
 const pool = mysql.createPool({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_DATABASE,
+  host: process.env.MYSQL_HOST,
+  user: process.env.MYSQL_USER,
+  password: process.env.MYSQL_PASSWORD,
+  database: process.env.MYSQL_DATABASE,
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
@@ -22,7 +22,7 @@ const pool = mysql.createPool({
 
 // สถานะการเชื่อมต่อ
 let isMqttConnected = false;
-let isMongoConnected = false;
+
 
 // เชื่อมต่อ MQTT
 const mqttClient = mqtt.connect(process.env.MQTT_BROKER);
@@ -36,22 +36,11 @@ mqttClient.on("error", (err) => {
 });
 
 // เชื่อมต่อ MongoDB
-// mongoose.connect(process.env.MONGO_URI, {
-//   // useNewUrlParser: true, useUnifiedTopology: true
-// })
-//   .then(() => {
-//     isMongoConnected = true;
-//     console.log("Connected to MongoDB");
-//   })
-//   .catch(err => {
-//     isMongoConnected = false;
-//     console.error("MongoDB Connection Error:", err);
-//   });
 
 // Root Route
 app.get('/', (req, res) => {
   res.send({
-    message: `Hello World! v2.0.0 ${isMqttConnected}, ${isMongoConnected}`
+    message: `Hello World! v2.0.0 ${isMqttConnected}`
   });
 });
 
