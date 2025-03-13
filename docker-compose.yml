@@ -54,7 +54,6 @@ services:
     restart: always
     depends_on:
       - mysql
-      - mongo
       - emqx
     ports:
       - "3000:3000"
@@ -84,7 +83,6 @@ services:
 
 volumes:
   mysql_data:
-  mongo_data:
   node_red_data:
 
 networks:
