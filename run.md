@@ -9,12 +9,22 @@
 git pull
 ```
 
-2. **Clean Up Docker Resources**:
+2. **Stop and Remove All Containers**:
    Remove all unused Docker containers, images, volumes, and networks:
 ```bash
+
+docker stop $(docker ps -aq)
+docker rm $(docker ps -aq)
+```
+
+2.1 **Clean Up Docker Resources**:
+   Remove all unused Docker containers, images, volumes, and networks:
+```bash
+
 sudo docker compose down
 sudo docker image prune -a
 sudo docker system prune -a --volumes
+
 ```
 
 3. **Delete the Existing MySQL Data**:
