@@ -90,7 +90,7 @@ mqttClient.on("error", (err) => {
 // Root Route
 app.get('/', (req, res) => {
   res.send({
-    message: `Hello World! v3.0.0 ${isMqttConnected}`
+    message: `Hello World! v4.0.0 ${isMqttConnected}`
   });
 });
 
