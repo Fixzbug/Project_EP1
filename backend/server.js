@@ -36,7 +36,9 @@ mqttClient.on("error", (err) => {
 });
 
 // เชื่อมต่อ MongoDB
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.MONGO_URI, {
+  // useNewUrlParser: true, useUnifiedTopology: true
+})
   .then(() => {
     isMongoConnected = true;
     console.log("Connected to MongoDB");
