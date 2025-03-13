@@ -110,14 +110,14 @@ services:
       MQTT_BROKER: mqtt://emqx
 
   ### Frontend - Ionic ###
-  frontend:
-    build: ./frontend
-    container_name: frontend
-    restart: always
-    depends_on:
-      - backend
-    ports:
-      - "8100:8100"
+  # frontend:
+  #   build: ./frontend
+  #   container_name: frontend
+  #   restart: always
+  #   depends_on:
+  #     - backend
+  #   ports:
+  #     - "8100:8100"
 
 volumes:
   mysql_data:
