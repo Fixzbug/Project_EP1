@@ -31,13 +31,28 @@ services:
     container_name: emqx
     restart: always
     ports:
-      - "1883:1883" # MQTT
-      - "8083:8083" # MQTT over WebSocket
-      - "8081:8081" # EMQX Dashboard
+      # - "1883:1883" # MQTT
+      # - "8083:8083" # MQTT over WebSocket
+      # - "8081:8081" # EMQX Dashboard
+      # - "18083:18083" # External Dashboard Access
+      # - "8883:8883" # Secure MQTT (Optional)
+      - "1883:1883"   # MQTT
+      - "8083:8083"   # MQTT over WebSocket (ws://)
+      - "8084:8084"   # MQTT over Secure WebSocket (wss://)
+      - "8081:8081"   # EMQX Dashboard (HTTP)
       - "18083:18083" # External Dashboard Access
-      - "8883:8883" # Secure MQTT (Optional)
+      - "8883:8883"   # Secure MQTT (mqtts://)
     environment:
       EMQX_ALLOW_ANONYMOUS: "true"
+      EMQX_LISTENER__WS__DEFAULT__ENABLE: "true"  # Enable WebSocket (ws)
+      EMQX_LISTENER__WSS__DEFAULT__ENABLE: "true" # Enable Secure WebSocket (wss)
+      EMQX_LISTENER__WSS__DEFAULT__ACCEPTORS: 16  # Max Connections
+      EMQX_LISTENER__WSS__DEFAULT__MAX_CONNECTIONS: 1024000
+      EMQX_LISTENER__WSS__DEFAULT__SSL__ENABLE: "true"
+      EMQX_LISTENER__WSS__DEFAULT__SSL__KEYFILE: "/etc/emqx/certs/key.pem"
+      EMQX_LISTENER__WSS__DEFAULT__SSL__CERTFILE: "/etc/emqx/certs/cert.pem"
+    volumes:
+      - ./emqx_certs:/etc/emqx/certs  # Mount SSL Certificates
     networks:
       - mynetwork
 
