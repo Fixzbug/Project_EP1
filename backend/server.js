@@ -20,21 +20,8 @@ const pool = mysql.createPool({
   queueLimit: 0,
 });
 
-// MySQL Connection Pool testing
-// const pool = mysql.createPool({
-//   host: 'localhost',
-//   user: 'root',
-//   password: '',
-//   database: 'test',
-//   waitForConnections: true,
-//   connectionLimit: 10,
-//   queueLimit: 0,
-// });
-
 // สถานะการเชื่อมต่อ
 let isMqttConnected = false;
-
-
 const clientId = 'emqx_nodejs_' + Math.random().toString(16).substring(2, 8)
 const username = 'makerz'
 const password = 'makerz'
@@ -46,37 +33,9 @@ const mqttClient = mqtt.connect(process.env.MQTT_BROKER, {
   password,
 });
 
-// const mqttClient = mqtt.connect('mqtt://151.106.113.75:1883/mqtt', {
-//   clientId,
-//   username,
-//   password,
-// });
-
 mqttClient.on("connect", () => {
-
   isMqttConnected = true;
-
   console.log("Connected to MQTT Broker");
-
-  // Message Payload
-  const message = JSON.stringify({
-    status: "success",
-    transaction_id: "TXN123456",
-    amount: 100.00,
-    currency: "THB",
-    timestamp: new Date().toISOString()
-  });
-
-  // Publish to topic 'testqrpayment'
-  mqttClient.publish("paymentsucess", message, { qos: 1 }, (err) => {
-    if (err) {
-      console.error("❌ Publish failed:", err);
-    } else {
-      console.log(`📤 Message sent to 'testqrpayment':`, message);
-    }
-    // mqttClient.end(); // Disconnect after publishing
-  });
-
 });
 
 
