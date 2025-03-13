@@ -118,19 +118,19 @@ services:
   #   ports:
   #     - "8100:8100"
 
-  api:
-    build: .
-    environment:
-      DB_HOST: db
-      DB_USER: makerz
-      DB_PASSWORD: P@ssword1234
-      DB_DATABASE: test
-    ports:
-      - '3000:3000'
-    depends_on:
-      - db
-    networks:
-      - mynetwork
+  # api:
+  #   build: .
+  #   environment:
+  #     DB_HOST: db
+  #     DB_USER: makerz
+  #     DB_PASSWORD: P@ssword1234
+  #     DB_DATABASE: test
+  #   ports:
+  #     - '3000:3000'
+  #   depends_on:
+  #     - db
+  #   networks:
+  #     - mynetwork
 
 volumes:
   mysql_data:
