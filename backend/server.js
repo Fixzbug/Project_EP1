@@ -51,7 +51,7 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
 // Root Route
 app.get('/', (req, res) => {
   res.send({
-    message: `Hello World! v${process.env.APP_VERSION || '1.0.0'}`,
+    message: `Hello World! v2.0.0`,
     mqtt_connected: isMqttConnected,
     mongo_connected: isMongoConnected
   });
