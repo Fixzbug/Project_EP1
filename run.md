@@ -28,7 +28,7 @@ sudo rm -rf ./db-data
 ```bash
 
 sudo docker compose up --build # build before run
-sudo docker-compose up -d #run background
+sudo docker-compose up -d --build #run background
 ```
 
 ---
