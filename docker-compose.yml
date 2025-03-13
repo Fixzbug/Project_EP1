@@ -15,7 +15,7 @@ services:
       - "3306:3306"
     volumes:
       - ./init-db:/docker-entrypoint-initdb.d
-      - ./db-data:/var/lib/mysql
+      - mysql_data:/var/lib/mysql
     networks:
       - mynetwork
 
@@ -32,6 +32,8 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: P@ssword1234
+    networks:
+      - mynetwork
 
   ### MQTT Broker - EMQX ###
   emqx:
@@ -42,8 +44,12 @@ services:
       - "1883:1883"   # MQTT
       - "8083:8083"   # MQTT over WebSocket
       - "8081:8081"   # EMQX Dashboard
+      - "18083:18083" # External Dashboard Access
+      - "8883:8883"   # Secure MQTT (Optional)
     environment:
       EMQX_ALLOW_ANONYMOUS: "true"
+    networks:
+      - mynetwork
 
   ### Node-RED ###
   node-red:
@@ -54,6 +60,8 @@ services:
       - "1880:1880"
     volumes:
       - node_red_data:/data
+    networks:
+      - mynetwork
 
   ### Backend - Node.js API ###
   backend:
@@ -68,11 +76,13 @@ services:
       - "3000:3000"
     environment:
       MYSQL_HOST: mysql
-      MYSQL_USER: user
-      MYSQL_PASSWORD: userpassword
-      MYSQL_DATABASE: device_db
+      MYSQL_USER: makerz
+      MYSQL_PASSWORD: P@ssword1234
+      MYSQL_DATABASE: test
       MONGO_URI: mongodb://root:P@ssword1234@mongo:27017/device_logs?authSource=admin
       MQTT_BROKER: mqtt://emqx
+    networks:
+      - mynetwork
 
   ## Frontend - Ionic ###
   frontend:
@@ -86,6 +96,8 @@ services:
     volumes:
       - ./frontend/build:/usr/share/nginx/html:ro
       - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - mynetwork
 
 volumes:
   mysql_data:
