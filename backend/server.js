@@ -72,7 +72,7 @@ process.on('SIGINT', () => {
   });
 });
 
-const port = process.env.PORT || 5000; // Fallback to 5000 if PORT is not defined
+const port = process.env.PORT || 3000; // Fallback to 5000 if PORT is not defined
 app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}`);
 });
