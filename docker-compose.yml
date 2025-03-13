@@ -31,11 +31,6 @@ services:
     container_name: emqx
     restart: always
     ports:
-      # - "1883:1883" # MQTT
-      # - "8083:8083" # MQTT over WebSocket
-      # - "8081:8081" # EMQX Dashboard
-      # - "18083:18083" # External Dashboard Access
-      # - "8883:8883" # Secure MQTT (Optional)
       - "1883:1883"   # MQTT
       - "8083:8083"   # MQTT over WebSocket (ws://)
       - "8084:8084"   # MQTT over Secure WebSocket (wss://)
