@@ -106,6 +106,7 @@ services:
     networks:
       - mynetwork
 
+
 volumes:
   pg_data:
   node_red_data:
