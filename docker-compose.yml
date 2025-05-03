@@ -73,7 +73,7 @@ services:
       emqx:
         condition: service_started
     ports:
-      - "3000:3000"
+      - "4000:4000"
     environment:
       DB_HOST: postgres
       DB_USER: makerz
@@ -84,7 +84,7 @@ services:
     networks:
       - mynetwork
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:4000/health"]
       interval: 10s
       retries: 3
       start_period: 20s
