@@ -1,7 +1,6 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const pool = require("../config/db.config");
-const redis = require("../config/redis");
 
 exports.register = async (data, callback) => {
     try {
@@ -18,18 +17,10 @@ exports.register = async (data, callback) => {
 
 exports.login = async ({ email, password }, callback) => {
     try {
-        let userData = await redis.get(`user:${email}`);
+        const result = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
+        if (!result.rows.length) return callback({ message: "User not found", code: 401 });
 
-        if (!userData) {
-            const result = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
-            if (!result.rows.length) return callback({ message: "User not found", code: 401 });
-
-            userData = result.rows[0];
-            await redis.set(`user:${email}`, JSON.stringify(userData), "EX", 3600);
-        } else {
-            userData = JSON.parse(userData);
-        }
-
+        const userData = result.rows[0];
         const valid = await bcrypt.compare(password, userData.password);
         if (!valid) return callback({ message: "Invalid credentials", code: 403 });
 
