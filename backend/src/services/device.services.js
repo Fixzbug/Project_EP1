@@ -3,6 +3,7 @@ const pool = require('../config/db.config');
 exports.getAllDevices = async (callback) => {
     try {
         const result = await pool.query('SELECT * FROM devices ORDER BY id');
+        // console.log(result.rows);
         callback(null, result.rows);
     } catch (err) {
         callback(err);
