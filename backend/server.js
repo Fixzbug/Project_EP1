@@ -17,14 +17,14 @@ app.use(express.json());
 app.use('/auth', authRoutes);
 app.use('/api', deviceRoutes);
 
-// Serve static frontend files
-app.use(express.static(path.join(__dirname, 'public')));
+// // Serve static frontend files
+// app.use(express.static(path.join(__dirname, 'public')));
 
-// Default redirect to login page
-app.get('/', (req, res) => {
-  console.log('🌐 Redirecting to /login.html');
-  res.redirect('/login.html');
-});
+// // Default redirect to login page
+// app.get('/', (req, res) => {
+//   console.log('🌐 Redirecting to /login.html');
+//   res.redirect('/login.html');
+// });
 
 // 404 Handler
 app.use((req, res, next) => {
