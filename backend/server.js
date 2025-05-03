@@ -1,83 +1,44 @@
-const express = require('express');
-const cors = require('cors');
-const mysql = require('mysql2/promise');
-const mongoose = require('mongoose');
-const mqtt = require('mqtt');
 require('dotenv').config();
-
+const express = require('express');
+const path = require('path');
+const cors = require('cors');
 const app = express();
-app.use(cors()); // Enable CORS
-app.use(express.json()); // Support for JSON payloads
 
-// MySQL Connection Pool prodcution
-const pool = mysql.createPool({
-  host: process.env.MYSQL_HOST,
-  user: process.env.MYSQL_USER,
-  password: process.env.MYSQL_PASSWORD,
-  database: process.env.MYSQL_DATABASE,
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0,
-});
+// Import routes
+const corsOptions = require('./src/config/corsOptions');
+const authRoutes = require('./src/routes/auth.routes');
+const deviceRoutes = require('./src/routes/device.routes');
 
-// สถานะการเชื่อมต่อ
-let isMqttConnected = false;
-const clientId = 'emqx_nodejs_' + Math.random().toString(16).substring(2, 8)
-const username = 'makerz'
-const password = 'makerz'
+// Middleware
+app.use(cors(corsOptions));
+app.use(express.json());
 
-// เชื่อมต่อ MQTT
-const mqttClient = mqtt.connect(process.env.MQTT_BROKER, {
-  clientId,
-  username,
-  password,
-});
+// API Routes
+app.use('/auth', authRoutes);
+app.use('/api', deviceRoutes);
 
-mqttClient.on("connect", () => {
-  isMqttConnected = true;
-  console.log("Connected to MQTT Broker");
-});
+// Serve static frontend files
+app.use(express.static(path.join(__dirname, 'public')));
 
-
-mqttClient.on("error", (err) => {
-  isMqttConnected = false;
-  console.error("MQTT Error:", err);
-});
-
-// เชื่อมต่อ MongoDB
-
-// Root Route
+// Default redirect to login page
 app.get('/', (req, res) => {
-  res.send({
-    message: `Hello World! v4.0.0 ${isMqttConnected}`
+  console.log('🌐 Redirecting to /login.html');
+  res.redirect('/login.html');
+});
+
+// 404 Handler
+app.use((req, res, next) => {
+  res.status(404).json({ error: 'Not Found' });
+});
+
+// Global error handler
+app.use((err, req, res, next) => {
+  console.error('❌ Global Error:', err);
+  res.status(err.code || 500).json({
+    error: err.message || 'Internal Server Error',
   });
 });
 
-app.get("/health", (req, res) => {
-  res.status(200).send("OK");
-});
-
-// Get Attractions Route
-app.get('/api', async (req, res) => {
-  try {
-    const [rows] = await pool.query("SELECT * FROM data");
-    res.json(rows);
-  } catch (err) {
-    console.error("Database error: ", err.message);
-    res.status(500).json({ error: "Database query failed" });
-  }
-});
-
-// Graceful Shutdown
-process.on('SIGINT', () => {
-  pool.end(() => {
-    console.log("Database connection pool closed.");
-    process.exit(0);
-  });
-});
-
-const port = process.env.PORT || 3000; // Fallback to 5000 if PORT is not defined
-app.listen(port, () => {
-  console.log(`App listening at http://localhost:${port}`);
-});
-
+// Server start
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`✅ Server running on http://localhost:${PORT}`));
