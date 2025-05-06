@@ -13,6 +13,7 @@ exports.getAllDevices = async (callback) => {
 exports.getDeviceById = async (id, callback) => {
     try {
         const result = await pool.query('SELECT * FROM devices WHERE device_code = $1', [id]);
+        // console.log(result.rows);
         if (!result.rows.length) return callback(null, null);
 
         const device = result.rows[0];
