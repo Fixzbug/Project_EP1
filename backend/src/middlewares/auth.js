@@ -1,14 +1,21 @@
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 
-function authenticateToken(req, res, next) {
-  const token = req.headers['authorization']?.split(' ')[1];
-  if (!token) return res.sendStatus(401);
+module.exports = (req, res, next) => {
+    const authHeader = req.headers.authorization;
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-    if (err) return res.sendStatus(403);
-    req.user = user;
-    next();
-  });
-}
+    // ✅ ตรวจสอบว่า header มีและขึ้นต้นด้วย "Bearer "
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return res.status(401).json({ message: "Missing or invalid token" });
+    }
 
-module.exports = authenticateToken;
+    const token = authHeader.split(" ")[1];
+
+    try {
+        // ✅ ตรวจสอบ token ด้วย secret key
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        req.user = decoded; // ✅ แนบ payload เข้า req.user
+        next(); // ✅ ไปยัง controller ถัดไป
+    } catch (err) {
+        return res.status(401).json({ message: "Invalid or expired token" });
+    }
+};

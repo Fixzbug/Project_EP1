@@ -35,3 +35,20 @@ exports.login = async ({ email, password }, callback) => {
         callback(err);
     }
 };
+
+exports.getUserProfile = async (userId, callback) => {
+    try {
+        const result = await pool.query(
+            "SELECT id, email FROM users WHERE id = $1", // ✅ ใช้ column ที่มีจริง
+            [userId]
+        );
+
+        if (!result.rows.length) {
+            return callback({ message: "User not found", code: 404 });
+        }
+
+        callback(null, result.rows[0]);
+    } catch (err) {
+        callback({ message: err.message || "Query error", code: 500 }); // ❌ อย่าโยน PostgreSQL error code มาใช้ตรง ๆ
+    }
+};

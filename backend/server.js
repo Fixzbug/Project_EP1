@@ -11,6 +11,8 @@ const deviceRoutes = require('./src/routes/device.routes');
 // Middleware
 app.use(cors(corsOptions));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true })); // รองรับแบบ form
+
 
 // API Routes
 app.use('/auth', authRoutes);
